@@ -71,13 +71,14 @@ namespace Weather
 		//dette er det vi trenger for å skrive data til sharedPreferences
 		private void SaveSelectedStation (Station station)
 		{
-			//var contextPreferences = Application.Context.GetSharedPreferences("WeatherApp", FileCreationMode.Private); //FileCreationMode.Private betyr at det ikke er noen andre apper som får lov til å bruke den
-			//var editableContextPreferences = contextPreferences.Edit();
+			var contextPreferences = Application.Context.GetSharedPreferences("WeatherApp", FileCreationMode.Private); //FileCreationMode.Private betyr at det ikke er noen andre apper som får lov til å bruke den
+			var editableContextPreferences = contextPreferences.Edit();
 
 			var json = JsonConvert.SerializeObject (station); //denne sender med hele station som et json object som da kan erstatte PutExtra
 			//bli plukket opp i SelectStationActivity -> OnActivityResult -> JsonConvert.DeserializeObject
 
 			editableContextPreferences.PutString("selectedStation", json);
+
 			editableContextPreferences.Commit();
 		}
 
@@ -86,8 +87,7 @@ namespace Weather
 		{
 			var contextPreferences = Application.Context.GetSharedPreferences("WeatherApp", FileCreationMode.Private); //FileCreationMode.Private betyr at det ikke er noen andre apper som får lov til å bruke den
 
-
-			//var json = contextPreferences.GetString("selectedStation", null);
+            var json = contextPreferences.GetString("selectedStation", null);
 			if (json == null) { //hvis det ikke finnes noe lagret data (altså det er første gang man kjører appen) skal man bare returnere fra metoden og fortsette
 				return;
 			}
